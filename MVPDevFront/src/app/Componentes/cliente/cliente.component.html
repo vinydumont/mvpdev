@@ -1,0 +1,121 @@
+<div class="container p-5" *ngIf="hiddenTable">
+    <div class="border border-light rounded p-5">
+        <div>
+            <button type="button" class="btn btn-sm btn-secondary" (click)="ExibirFormCadastro()">Nova Pessoa</button>
+        </div>
+        <hr/>
+    
+        <table class="table table-striped table-houver table-sm" *ngIf="listaClientes">
+            <tr class="thead-light">
+                <th>CNPJ</th>
+                <th>Nome</th>
+                <th>Razão Social</th>
+                <th>CNAE</th>
+                <th>Endereço</th>
+                <th>Numero</th>
+                <th>CEP</th>
+                <th>Bairro</th>
+                <th>Municipio</th>
+                <th>Ações</th>
+            </tr>
+
+            <tr *ngFor="let cliente of listaClientes">
+                <td>{{cliente.cnpj}}</td>
+                <td>{{cliente.nome}}</td>
+                <td>{{cliente.razaoSocial}}</td>
+                <td>{{cliente.cnae}}</td>
+                <td>{{cliente.logradouro}}</td>
+                <td>{{cliente.logNumero}}</td>
+                <td>{{cliente.cep}}</td>
+                <td>{{cliente.bairro}}</td>
+                <td>{{cliente.municipio}}</td>
+                <td>
+                    <button type="button" class="btn btn-sm btn-outline-info" 
+                        (click)="ExibirFormAtualizacao(cliente.id)">Atualizar</button> | 
+                    <button type="button" class="btn btn-sm btn-outline-danger"
+                        (click)="ConfirmaExclusaoCliente(cliente.id, cliente.cnpj, cliente.nome, conteudoModal)">Excluir</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<div class="container p-5" *ngIf="hiddenForm">
+    <div class="row">
+        <div class="col-6 border border-light rounded p-5 shadow">
+            <h6>{{formTitle}}</h6>
+            <hr/>
+
+            <form [formGroup]="formCliente" *ngIf="formCliente" (ngSubmit)="EnviarFormulario()" >
+                <div class="formGroup">
+                    <label>CNPJ</label>
+                    <input type="text" class="form-control form-control-sm" formControlName="cnpj"/>
+                </div>
+                <div class="formGroup">
+                    <label>Nome</label>
+                    <input type="text" class="form-control form-control-sm" formControlName="nome"/>
+                </div>
+                <div class="formGroup">
+                    <label>Razão Social</label>
+                    <input type="text" class="form-control form-control-sm" formControlName="razaoSocial"/>
+                </div>
+                <div class="formGroup">
+                    <label>CNAE</label>
+                    <input type="text" class="form-control form-control-sm" formControlName="cnae"/>
+                </div>
+                <div class="formGroup">
+                    <label>Endereço</label>
+                    <input type="text" class="form-control form-control-sm" formControlName="logradouro"/>
+                </div>
+                <div class="formGroup">
+                    <label>Numero</label>
+                    <input type="text" class="form-control form-control-sm" formControlName="logNumero"/>
+                </div>
+                <div class="formGroup">
+                    <label>Complemento</label>
+                    <input type="text" class="form-control form-control-sm" formControlName="complemento"/>
+                </div>
+                <div class="formGroup">
+                    <label>CEP</label>
+                    <input type="text" class="form-control form-control-sm" formControlName="cep"/>
+                </div>
+                <div class="formGroup">
+                    <label>Bairro</label>
+                    <input type="text" class="form-control form-control-sm" formControlName="bairro"/>
+                </div>
+                <div class="formGroup">
+                    <label>Municipio</label>
+                    <input type="text" class="form-control form-control-sm" formControlName="municipio"/>
+                </div>
+                <hr/>
+                <div class="container">
+                    <div class="row">
+                        <div>   
+                            <button type="submit" class="btn btn-sm btn-outline-secondary">Salvar</button>
+                        </div>
+                        <div class="pl-1">
+                            <button type="button" class="btn btn-sm btn-light" (click)="VoltarFormCadastro()">Voltar</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<ng-template #conteudoModal>
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">Confirmação de Exclusão</h4>
+      <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef.hide()">
+        <span aria-hidden="true" class="visually-hidden">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      Prosseguir com a exclusão do cliente - {{clienteCnpj}} - {{clienteNome}}?
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light" (click)="modalRef.hide()"> Não </button>
+        <button type="button" class="btn btn-outline-danger" (click)="ExcluirCliente(clienteId)"> Sim </button>
+    </div>
+  </ng-template>
